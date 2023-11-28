@@ -1,7 +1,9 @@
 .Item {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   transition: background-color 1s;
+  padding: 0 21px 0 19px;
 }
 
 .Item_selected {
@@ -10,16 +12,27 @@
 }
 
 .Item-code {
-  padding: 20px 10px 20px 20px;
+  padding: 20px 10px 20px 0;
 }
 
 .Item-title {
   width: 100%;
-  padding: 20px 10px;
+  padding: 21px 10px 22px;
 }
 
-.Item-actions {
+.Item-box--right {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  padding: 20px 20px 20px 10px;
+  gap: 24px;
+  width: 100%;
+  padding-left: 10px;
+}
+
+.Item-box--right button {
+  padding: 1px 7px 1px 7px;
+}
+
+.Item-price {
+  font-size: 18px;
 }

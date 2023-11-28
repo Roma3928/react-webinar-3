@@ -1,21 +1,24 @@
 import React from "react";
-import PropTypes from 'prop-types';
-import './style.css';
+import PropTypes from "prop-types";
+import "./style.css";
 
-function Controls({onAdd}) {
+function Controls({ setModalVisibility }) {
   return (
-    <div className='Controls'>
-      <button onClick={() => onAdd()}>Добавить</button>
+    <div className="Controls">
+      <p className="Controls-info">
+        В корзине:<span>2 товара / 223 ₽</span>
+      </p>
+      <button onClick={() => setModalVisibility(true)}>Перейти</button>
     </div>
-  )
+  );
 }
 
 Controls.propTypes = {
-  onAdd: PropTypes.func
+  setModalVisibility: PropTypes.func,
 };
 
 Controls.defaultProps = {
-  onAdd: () => {}
-}
+  setModalVisibility: () => {},
+};
 
 export default React.memo(Controls);
