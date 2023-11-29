@@ -47,7 +47,7 @@ class Store {
   addItemToCart(obj) {
     const findItem = this.state.cart.find((item) => item.code === obj.code);
     if (findItem) {
-      findItem.count = ++findItem.count;
+      findItem.count++;
     } else {
       this.setState({
         ...this.state,
