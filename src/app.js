@@ -3,7 +3,7 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
-import Modal from "./components/modal";
+import Cart from "./components/cart";
 
 /**
  * Приложение
@@ -12,18 +12,42 @@ import Modal from "./components/modal";
  */
 function App({ store }) {
   const list = store.getState().list;
+  const cart = store.getState().cart;
+  const totalPrice = store.getState().totalPrice;
   const [modalVisibility, setModalVisibility] = useState(false);
 
-  const callbacks = {};
+  const callbacks = {
+    onDeleteItem: useCallback(
+      (code) => {
+        store.deleteItemFromCart(code);
+      },
+      [store]
+    ),
+
+    onAddItem: useCallback(
+      (obj) => {
+        store.addItemToCart(obj);
+      },
+      [store]
+    ),
+  };
 
   return (
     <PageLayout>
       <Head title="Магазин" />
-      <Controls setModalVisibility={setModalVisibility} />
-      <List list={list} />
-      <Modal
+      <Controls
+        totalPrice={totalPrice}
         modalVisibility={modalVisibility}
         setModalVisibility={setModalVisibility}
+        cart={cart}
+      />
+      <List list={list} onAddItem={callbacks.onAddItem} />
+      <Cart
+        cart={cart}
+        modalVisibility={modalVisibility}
+        setModalVisibility={setModalVisibility}
+        onDeleteItem={callbacks.onDeleteItem}
+        totalPrice={totalPrice}
       />
     </PageLayout>
   );

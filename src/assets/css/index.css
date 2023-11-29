@@ -55,3 +55,8 @@ img {
 textarea {
     resize: vertical;
 }
+
+.btn {
+    padding: 1px 7px;
+    min-width: 76px;
+}

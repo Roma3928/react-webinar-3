@@ -6,7 +6,7 @@
 }
 
 .Controls button {
-  padding: 1px 12px 1px 12px;
+  min-width: 81px;
 }
 
 .Controls-info {
