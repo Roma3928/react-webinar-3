@@ -18,8 +18,8 @@ function App({ store }) {
 
   const callbacks = {
     onDeleteItem: useCallback(
-      (code) => {
-        store.deleteItemFromCart(code);
+      (obj) => {
+        store.deleteItemFromCart(obj);
       },
       [store]
     ),
@@ -33,15 +33,16 @@ function App({ store }) {
   };
 
   return (
-    <PageLayout>
-      <Head title="Магазин" />
-      <Controls
-        totalPrice={totalPrice}
-        modalVisibility={modalVisibility}
-        setModalVisibility={setModalVisibility}
-        cart={cart}
-      />
-      <List list={list} onAddItem={callbacks.onAddItem} />
+    <>
+      <PageLayout>
+        <Head title="Магазин" />
+        <Controls
+          totalPrice={totalPrice}
+          setModalVisibility={setModalVisibility}
+          cart={cart}
+        />
+        <List list={list} btnAction={callbacks.onAddItem} textBtn="Добавить" />
+      </PageLayout>
       <Cart
         cart={cart}
         modalVisibility={modalVisibility}
@@ -49,7 +50,7 @@ function App({ store }) {
         onDeleteItem={callbacks.onDeleteItem}
         totalPrice={totalPrice}
       />
-    </PageLayout>
+    </>
   );
 }
 

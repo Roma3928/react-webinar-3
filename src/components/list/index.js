@@ -3,21 +3,15 @@ import PropTypes from "prop-types";
 import Item from "../item";
 import "./style.css";
 
-function List({ list, onAddItem }) {
+function List({ list, btnAction, textBtn }) {
   return (
     <div className="List">
       {list.map((item) => (
         <div key={item.code} className="List-item">
           <Item
             item={item}
-            btnAction={() => {
-              onAddItem({
-                code: item.code,
-                title: item.title,
-                price: item.price,
-              });
-            }}
-            textBtn="Добавить"
+            btnAction={() => btnAction(item)}
+            textBtn={textBtn}
           />
         </div>
       ))}
@@ -31,11 +25,12 @@ List.propTypes = {
       code: PropTypes.number,
     })
   ).isRequired,
-  onAddItem: PropTypes.func,
+  btnAction: PropTypes.func,
+  textBtn: PropTypes.string,
 };
 
 List.defaultProps = {
-  onAddItem: () => {},
+  btnAction: () => {},
 };
 
 export default React.memo(List);

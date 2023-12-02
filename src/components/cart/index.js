@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
-import Item from "../item";
+import List from "../list";
 import { formatNumberWithSpaces } from "../../utils";
+import Modal from "../ui/modal";
 
 function Cart({
   modalVisibility,
@@ -12,49 +13,34 @@ function Cart({
   totalPrice,
 }) {
   return (
-    <div
-      className={"Cart" + (modalVisibility ? " Cart-active" : "")}
-      onClick={() => setModalVisibility(false)}
+    <Modal
+      modalVisibility={modalVisibility}
+      setModalVisibility={setModalVisibility}
     >
-      <div onClick={(e) => e.stopPropagation()} className="Cart-content">
-        <div className="Cart-header">
-          <h2 className="Cart-title">Корзина</h2>
-          <button className="btn" onClick={() => setModalVisibility(false)}>
-            Закрыть
-          </button>
-        </div>
-
-        <div className="Cart-list">
-          {cart.map((item) => (
-            <div key={item.code} className="List-item">
-              <Item
-                item={item}
-                textBtn="Удалить"
-                btnAction={() => onDeleteItem(item.code)}
-              />
-            </div>
-          ))}
-        </div>
-        {cart.length ? (
-          <p className="Cart-totalprice">
-            Итого <span>{formatNumberWithSpaces(totalPrice)} ₽</span>
-          </p>
-        ) : (
-          <p className="Cart-empty">Корзина пустая</p>
-        )}
+      <div className="Cart-header">
+        <h2 className="Cart-title">Корзина</h2>
+        <button className="btn" onClick={() => setModalVisibility(false)}>
+          Закрыть
+        </button>
       </div>
-    </div>
+      <div className="Cart-list">
+        <List list={cart} btnAction={onDeleteItem} textBtn="Удалить" />
+      </div>
+      {cart.length ? (
+        <p className="Cart-totalprice">
+          Итого <span>{formatNumberWithSpaces(totalPrice)} ₽</span>
+        </p>
+      ) : (
+        <p className="Cart-empty">Корзина пустая</p>
+      )}
+    </Modal>
   );
 }
 
 Cart.propTypes = {
   modalVisibility: PropTypes.bool,
   setModalVisibility: PropTypes.func,
-  cart: PropTypes.arrayOf(
-    PropTypes.shape({
-      code: PropTypes.number,
-    })
-  ).isRequired,
+  cart: PropTypes.array,
   onDeleteItem: PropTypes.func,
   totalPrice: PropTypes.number,
 };

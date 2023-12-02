@@ -46,15 +46,18 @@ class Store {
    */
   addItemToCart(obj) {
     const findItem = this.state.cart.find((item) => item.code === obj.code);
-    if (findItem) {
-      findItem.count++;
-    } else {
-      this.setState({
-        ...this.state,
-        cart: [...this.state.cart, { ...obj, count: 1 }],
-      });
-    }
 
+    this.setState({
+      ...this.state,
+      cart: findItem
+        ? this.state.cart.map((item) => {
+            if (item.code === obj.code) {
+              return { ...item, count: ++item.count };
+            }
+            return item;
+          })
+        : [...this.state.cart, { ...obj, count: 1 }],
+    });
     this.calculateTotalPrice();
   }
 
@@ -62,10 +65,10 @@ class Store {
    * Удаление по коду
    * @param code
    */
-  deleteItemFromCart(code) {
+  deleteItemFromCart(obj) {
     this.setState({
       ...this.state,
-      cart: this.state.cart.filter((item) => item.code !== code),
+      cart: this.state.cart.filter((item) => item.code !== obj.code),
     });
 
     this.calculateTotalPrice();
