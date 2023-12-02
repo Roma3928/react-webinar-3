@@ -52,3 +52,14 @@ export function generateCode2() {
     ? ++generateCode2.value
     : (generateCode2.value = 1);
 }
+
+/**
+ *
+ * Форматирует число с разделением тысяч и указанным языком.
+ * @param value {Number} Число, которое необходимо отформатировать.
+ * @param [locale] {String} Локаль (код языка)
+ * @returns {string} Отформатированная строка числа с разделением тысяч.
+ */
+export function formatNumberWithSpaces(number, locale = "ru-RU") {
+  return number.toLocaleString(locale);
+}

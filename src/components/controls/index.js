@@ -1,22 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./style.css";
-import { plural } from "../../utils";
+import { formatNumberWithSpaces, plural } from "../../utils";
 
 function Controls({ setModalVisibility, totalPrice, cart }) {
   return (
     <div className="Controls">
       <p className="Controls-info">
         В корзине:
-        <span>
-          {cart.length}{" "}
-          {plural(cart.length, {
-            one: "товар",
-            few: "товара",
-            many: "товаров",
-          })}{" "}
-          / {totalPrice} ₽
-        </span>
+        {!!cart.length ? (
+          <span className="Controls-details">
+            {cart.length}{" "}
+            {plural(cart.length, {
+              one: "товар",
+              few: "товара",
+              many: "товаров",
+            })}{" "}
+            / {formatNumberWithSpaces(totalPrice)} ₽
+          </span>
+        ) : (
+          <span className="Controls-empty">пусто</span>
+        )}
       </p>
       <button className="btn" onClick={() => setModalVisibility(true)}>
         Перейти
