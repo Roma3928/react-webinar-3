@@ -7,13 +7,13 @@
  * @param [locale] {String} Локаль (код языка)
  * @returns {String}
  */
-export function plural(value, variants = {}, locale = 'ru-RU') {
+export function plural(value, variants = {}, locale = "ru-RU") {
   // Получаем фурму кодовой строкой: 'zero', 'one', 'two', 'few', 'many', 'other'
   // В русском языке 3 формы: 'one', 'few', 'many', и 'other' для дробных
   // В английском 2 формы: 'one', 'other'
   const key = new Intl.PluralRules(locale).select(value);
   // Возвращаем вариант по ключу, если он есть
-  return variants[key] || '';
+  return variants[key] || "";
 }
 
 /**
@@ -30,6 +30,40 @@ export function codeGenerator(start = 0) {
  * @param options {Object}
  * @returns {String}
  */
-export function numberFormat(value, locale = 'ru-RU', options = {}) {
+export function numberFormat(value, locale = "ru-RU", options = {}) {
   return new Intl.NumberFormat(locale, options).format(value);
+}
+
+export function getTotalPages(totalCount, limit) {
+  return Math.ceil(totalCount / limit);
+}
+
+export function getPagesArray(totalPages, currentPage) {
+  const range = (start, end) =>
+    Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  if (totalPages <= 7) {
+    return [...range(1, totalPages)];
+  }
+
+  if (currentPage <= 2) {
+    return [...range(1, 3), "...", totalPages];
+  }
+
+  if (currentPage === 3) {
+    return [...range(1, 4), "...", totalPages];
+  }
+
+  if (currentPage > totalPages - 2) {
+    return [1, "...", ...range(Math.max(1, totalPages - 2), totalPages)];
+  } else if (currentPage === totalPages - 2) {
+    return [1, "...", ...range(Math.max(1, totalPages - 3), totalPages)];
+  }
+
+  return [
+    1,
+    "...",
+    ...range(currentPage - 1, currentPage + 1),
+    "...",
+    totalPages,
+  ];
 }
