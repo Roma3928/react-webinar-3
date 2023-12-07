@@ -5,6 +5,7 @@ import ModalLayout from "../../components/modal-layout";
 import BasketTotal from "../../components/basket-total";
 import useStore from "../../store/hooks/use-store";
 import useSelector from "../../store/hooks/use-selector";
+import translations from "../../translations";
 
 function Basket() {
   const store = useStore();
@@ -13,6 +14,7 @@ function Basket() {
     list: state.basket.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
+    currentLang: state.language.lang,
   }));
 
   const callbacks = {
@@ -41,7 +43,10 @@ function Basket() {
   };
 
   return (
-    <ModalLayout title="Корзина" onClose={callbacks.closeModal}>
+    <ModalLayout
+      title={translations[select.currentLang]["cart"]}
+      onClose={callbacks.closeModal}
+    >
       <List list={select.list} renderItem={renders.itemBasket} />
       <BasketTotal sum={select.sum} />
     </ModalLayout>

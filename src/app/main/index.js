@@ -8,6 +8,7 @@ import { useFetching } from "../../store/hooks/use-fetching";
 import useSelector from "../../store/hooks/use-selector";
 import Pagination from "../../components/pagination";
 import Loader from "../../components/ui/loader";
+import translations from "../../translations";
 
 function Main() {
   const store = useStore();
@@ -18,6 +19,7 @@ function Main() {
     sum: state.basket.sum,
     totalPages: state.catalog.totalPages,
     currentPage: state.catalog.currentPage,
+    currentLang: state.language.lang,
   }));
 
   const [fetchListProducts, isListProductsLoading, listProductsError] =
@@ -57,7 +59,7 @@ function Main() {
 
   return (
     <>
-      <Head title="Магазин" />
+      <Head title={translations[select.currentLang]["store"]} />
       <BasketTool
         onOpen={callbacks.openModalBasket}
         amount={select.amount}
