@@ -1,48 +1,55 @@
+import ProductService from "../../api/product-service";
 import StoreModule from "../module";
 
 class Basket extends StoreModule {
-
   initState() {
     return {
       list: [],
       sum: 0,
-      amount: 0
-    }
+      amount: 0,
+    };
   }
 
   /**
    * Добавление товара в корзину
    * @param _id Код товара
    */
-  addToBasket(_id) {
+  async addToBasket(_id) {
     let sum = 0;
     // Ищем товар в корзине, чтобы увеличить его количество
     let exist = false;
-    const list = this.getState().list.map(item => {
+    const list = this.getState().list.map((item) => {
       let result = item;
       if (item._id === _id) {
         exist = true; // Запомним, что был найден в корзине
-        result = {...item, amount: item.amount + 1};
+        result = { ...item, amount: item.amount + 1 };
       }
       sum += result.price * result.amount;
       return result;
     });
 
     if (!exist) {
-      // Поиск товара в каталоге, чтобы его добавить в корзину.
-      // @todo В реальном приложении будет запрос к АПИ вместо поиска по состоянию.
-      const item = this.store.getState().catalog.list.find(item => item._id === _id);
-      list.push({...item, amount: 1}); // list уже новый, в него можно пушить.
+      const item = await ProductService.getById(_id);
+
+      list.push({
+        _id: item.result._id,
+        price: item.result.price,
+        title: item.result.title,
+        amount: 1,
+      }); // list уже новый, в него можно пушить.
       // Добавляем к сумме.
-      sum += item.price;
+      sum += item.result.price;
     }
 
-    this.setState({
-      ...this.getState(),
-      list,
-      sum,
-      amount: list.length
-    }, 'Добавление в корзину');
+    this.setState(
+      {
+        ...this.getState(),
+        list,
+        sum,
+        amount: list.length,
+      },
+      "Добавление в корзину"
+    );
   }
 
   /**
@@ -51,18 +58,21 @@ class Basket extends StoreModule {
    */
   removeFromBasket(_id) {
     let sum = 0;
-    const list = this.getState().list.filter(item => {
+    const list = this.getState().list.filter((item) => {
       if (item._id === _id) return false;
       sum += item.price * item.amount;
       return true;
     });
 
-    this.setState({
-      ...this.getState(),
-      list,
-      sum,
-      amount: list.length
-    }, 'Удаление из корзины');
+    this.setState(
+      {
+        ...this.getState(),
+        list,
+        sum,
+        amount: list.length,
+      },
+      "Удаление из корзины"
+    );
   }
 }
 

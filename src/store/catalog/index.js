@@ -17,21 +17,17 @@ class Catalog extends StoreModule {
   }
 
   async load() {
-    try {
-      const { currentPage, limit } = this.getState();
-      const skip = (currentPage - 1) * limit;
-      const json = await ProductService.getAll(skip, limit);
-      this.setState(
-        {
-          ...this.getState(),
-          list: json.result.items,
-          totalPages: getTotalPages(json.result?.count, limit),
-        },
-        "Загружены товары из АПИ"
-      );
-    } catch (e) {
-      console.error(e);
-    }
+    const { currentPage, limit } = this.getState();
+    const skip = (currentPage - 1) * limit;
+    const json = await ProductService.getAll(skip, limit);
+    this.setState(
+      {
+        ...this.getState(),
+        list: json.result.items,
+        totalPages: getTotalPages(json.result?.count, limit),
+      },
+      "Загружены товары из АПИ"
+    );
   }
 
   setPage(page) {

@@ -7,4 +7,11 @@ export default class ProductService {
     );
     return response.json();
   }
+
+  static async getById(id) {
+    const response = await fetch(
+      `${API_URL}/${id}?fields=*,madeIn(title,code),category(title)`
+    );
+    return response.json();
+  }
 }

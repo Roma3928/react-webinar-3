@@ -1,12 +1,13 @@
 import { memo, useCallback, useEffect } from "react";
 import Item from "../../components/item";
-import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
 import BasketTool from "../../components/basket-tool";
 import List from "../../components/list";
-import useStore from "../../store/use-store";
-import useSelector from "../../store/use-selector";
+import useStore from "../../store/hooks/use-store";
+import { useFetching } from "../../store/hooks/use-fetching";
+import useSelector from "../../store/hooks/use-selector";
 import Pagination from "../../components/pagination";
+import Loader from "../../components/ui/Loader";
 
 function Main() {
   const store = useStore();
@@ -19,8 +20,13 @@ function Main() {
     currentPage: state.catalog.currentPage,
   }));
 
+  const [fetchListProducts, isListProductsLoading, listProductsError] =
+    useFetching(async () => {
+      store.actions.catalog.load();
+    });
+
   useEffect(() => {
-    store.actions.catalog.load();
+    fetchListProducts();
   }, [select.currentPage]);
 
   const callbacks = {
@@ -50,20 +56,25 @@ function Main() {
   };
 
   return (
-    <PageLayout>
+    <>
       <Head title="Магазин" />
       <BasketTool
         onOpen={callbacks.openModalBasket}
         amount={select.amount}
         sum={select.sum}
       />
+      {isListProductsLoading && (
+        <div className="LoaderBox">
+          <Loader />
+        </div>
+      )}
       <List list={select.list} renderItem={renders.item} />
       <Pagination
         totalPages={select.totalPages}
         currentPage={select.currentPage}
         setPage={callbacks.setPage}
       />
-    </PageLayout>
+    </>
   );
 }
 

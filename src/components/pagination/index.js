@@ -3,18 +3,18 @@ import "./style.css";
 import PropTypes from "prop-types";
 import { getPagesArray } from "../../utils";
 
-const Pagination = ({ totalPages, currentPage, setPage }) => {
-  const pagesАrray = getPagesArray(totalPages, currentPage);
+const Pagination = (props) => {
+  const pagesАrray = getPagesArray(props.totalPages, props.currentPage);
 
   return (
     <ul className="Pagination">
       {pagesАrray.map((page, index) => (
         <li
           key={index}
-          onClick={() => typeof page === "number" && setPage(page)}
+          onClick={() => typeof page === "number" && props.setPage(page)}
           className={
             typeof page === "number"
-              ? currentPage === page
+              ? props.currentPage === page
                 ? "Pagination-item Pagination-item--active"
                 : "Pagination-item"
               : "Pagination-item Pagination-points"

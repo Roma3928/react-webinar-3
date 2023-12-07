@@ -1,0 +1,14 @@
+.Navigation {
+    display: flex;
+    gap: 10px;
+}
+
+.Navigation a {
+    color: #000;
+    text-decoration: none;
+}
+
+.Navigation .active {
+    color: #0087E9;
+    text-decoration: underline;
+}

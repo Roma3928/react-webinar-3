@@ -11,8 +11,15 @@
 }
 
 .ItemBasket-title {
+  color: #000;
+  text-decoration-color: transparent;
   width: 100%;
   padding: 20px 10px;
+  transition: text-decoration-color .3s ease-out;
+}
+
+.ItemBasket-title:hover {
+  text-decoration: underline;
 }
 
 .ItemBasket-right {
