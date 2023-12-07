@@ -4,7 +4,7 @@ import Head from "../../components/head";
 import { useFetching } from "../../store/hooks/use-fetching";
 import useStore from "../../store/hooks/use-store";
 import useSelector from "../../store/hooks/use-selector";
-import Loader from "../../components/ui/Loader";
+import Loader from "../../components/ui/loader";
 import ProductCard from "../../components/product-card";
 import BasketTool from "../../components/basket-tool";
 

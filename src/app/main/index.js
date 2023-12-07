@@ -7,7 +7,7 @@ import useStore from "../../store/hooks/use-store";
 import { useFetching } from "../../store/hooks/use-fetching";
 import useSelector from "../../store/hooks/use-selector";
 import Pagination from "../../components/pagination";
-import Loader from "../../components/ui/Loader";
+import Loader from "../../components/ui/loader";
 
 function Main() {
   const store = useStore();
