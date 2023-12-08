@@ -2,18 +2,22 @@ import { NavLink } from "react-router-dom";
 import { memo } from "react";
 import "./style.css";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
+import PropTypes from "prop-types";
 
-function Navigation() {
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
-
+function Navigation(props) {
   return (
     <nav className="Navigation">
-      <NavLink to="/">{translations[select.currentLang]["home"]}</NavLink>
+      <NavLink to="/">{translations[props.currentLang]["home"]}</NavLink>
     </nav>
   );
 }
+
+Navigation.propTypes = {
+  currentLang: PropTypes.string,
+};
+
+Navigation.defaultProps = {
+  currentLang: "ru",
+};
 
 export default memo(Navigation);

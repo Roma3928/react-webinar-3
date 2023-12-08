@@ -2,12 +2,12 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
 
-function List({ list, renderItem }) {
+function List({ list, renderItem, currentLang }) {
   return (
     <div className="List">
       {list.map((item) => (
         <div key={item._id} className="List-item">
-          {renderItem(item)}
+          {renderItem(item, currentLang)}
         </div>
       ))}
     </div>
@@ -21,10 +21,12 @@ List.propTypes = {
     })
   ).isRequired,
   renderItem: PropTypes.func,
+  currentLang: PropTypes.string,
 };
 
 List.defaultProps = {
   renderItem: (item) => {},
+  currentLang: "ru",
 };
 
 export default memo(List);

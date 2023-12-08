@@ -6,14 +6,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import "./style.css";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
 
 function ItemBasket(props) {
   const cn = bem("ItemBasket");
-
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
 
   const callbacks = {
     onRemove: (e) => props.onRemove(props.item._id),
@@ -32,11 +27,11 @@ function ItemBasket(props) {
         <div className={cn("cell")}>{numberFormat(props.item.price)} ₽</div>
         <div className={cn("cell")}>
           {numberFormat(props.item.amount || 0)}{" "}
-          {translations[select.currentLang]["pcs"]}
+          {translations[props.currentLang]["pcs"]}
         </div>
         <div className={cn("cell")}>
           <button onClick={callbacks.onRemove}>
-            {translations[select.currentLang]["removeBtn"]}
+            {translations[props.currentLang]["removeBtn"]}
           </button>
         </div>
       </div>
@@ -53,11 +48,13 @@ ItemBasket.propTypes = {
   }).isRequired,
   onRemove: propTypes.func,
   onClose: PropTypes.func,
+  currentLang: PropTypes.string,
 };
 
 ItemBasket.defaultProps = {
   onRemove: () => {},
   onClose: () => {},
+  currentLang: "ru",
 };
 
 export default memo(ItemBasket);

@@ -5,33 +5,28 @@ import { numberFormat, plural } from "../../utils";
 import "./style.css";
 import Navigation from "../navigation";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
 
-function BasketTool({ sum, amount, onOpen }) {
+function BasketTool(props) {
   const cn = bem("BasketTool");
-
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
 
   return (
     <div className={cn()}>
-      <Navigation />
+      <Navigation currentLang={props.currentLang} />
       <div>
         <span className={cn("label")}>
-          {translations[select.currentLang]["cartLabel"]}
+          {translations[props.currentLang]["cartLabel"]}
         </span>
         <span className={cn("total")}>
-          {amount
-            ? `${amount} ${plural(
-                amount,
-                translations[select.currentLang]["pluralProducts"],
-                translations[select.currentLang]["locale"]
-              )} / ${numberFormat(sum)} ₽`
-            : translations[select.currentLang]["cartEmpty"]}
+          {props.amount
+            ? `${props.amount} ${plural(
+                props.amount,
+                translations[props.currentLang]["pluralProducts"],
+                translations[props.currentLang]["locale"]
+              )} / ${numberFormat(props.sum)} ₽`
+            : translations[props.currentLang]["cartEmpty"]}
         </span>
-        <button onClick={onOpen}>
-          {translations[select.currentLang]["openBtn"]}
+        <button onClick={props.onOpen}>
+          {translations[props.currentLang]["openBtn"]}
         </button>
       </div>
     </div>
@@ -42,12 +37,14 @@ BasketTool.propTypes = {
   onOpen: PropTypes.func.isRequired,
   sum: PropTypes.number,
   amount: PropTypes.number,
+  currentLang: PropTypes.string,
 };
 
 BasketTool.defaultProps = {
   onOpen: () => {},
   sum: 0,
   amount: 0,
+  currentLang: "ru",
 };
 
 export default memo(BasketTool);

@@ -46,12 +46,22 @@ function Main() {
       (page) => store.actions.catalog.setPage(page),
       [store]
     ),
+    setLang: useCallback(
+      (lang) => store.actions.language.setLang(lang),
+      [store]
+    ),
   };
 
   const renders = {
     item: useCallback(
-      (item) => {
-        return <Item item={item} onAdd={callbacks.addToBasket} />;
+      (item, currentLang) => {
+        return (
+          <Item
+            item={item}
+            onAdd={callbacks.addToBasket}
+            currentLang={currentLang}
+          />
+        );
       },
       [callbacks.addToBasket]
     ),
@@ -59,18 +69,27 @@ function Main() {
 
   return (
     <>
-      <Head title={translations[select.currentLang]["store"]} />
+      <Head
+        title={translations[select.currentLang]["store"]}
+        setLang={callbacks.setLang}
+        currentLang={select.currentLang}
+      />
       <BasketTool
         onOpen={callbacks.openModalBasket}
         amount={select.amount}
         sum={select.sum}
+        currentLang={select.currentLang}
       />
       {isListProductsLoading && (
         <div className="LoaderBox">
           <Loader />
         </div>
       )}
-      <List list={select.list} renderItem={renders.item} />
+      <List
+        list={select.list}
+        renderItem={renders.item}
+        currentLang={select.currentLang}
+      />
       <Pagination
         totalPages={select.totalPages}
         currentPage={select.currentPage}

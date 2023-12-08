@@ -29,12 +29,13 @@ function Basket() {
 
   const renders = {
     itemBasket: useCallback(
-      (item) => {
+      (item, currentLang) => {
         return (
           <ItemBasket
             item={item}
             onRemove={callbacks.removeFromBasket}
             onClose={callbacks.closeModal}
+            currentLang={currentLang}
           />
         );
       },
@@ -46,9 +47,14 @@ function Basket() {
     <ModalLayout
       title={translations[select.currentLang]["cart"]}
       onClose={callbacks.closeModal}
+      currentLang={select.currentLang}
     >
-      <List list={select.list} renderItem={renders.itemBasket} />
-      <BasketTotal sum={select.sum} />
+      <List
+        list={select.list}
+        renderItem={renders.itemBasket}
+        currentLang={select.currentLang}
+      />
+      <BasketTotal sum={select.sum} currentLang={select.currentLang} />
     </ModalLayout>
   );
 }

@@ -3,13 +3,8 @@ import { numberFormat } from "../../utils";
 import "./style.css";
 import PropTypes from "prop-types";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
 
 function ProductCard(props) {
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
-
   const callbacks = {
     addToBasket: () => props.onAction(props.item._id),
   };
@@ -18,25 +13,25 @@ function ProductCard(props) {
     <div className="ProductCard">
       <p>{props.item?.description}</p>
       <p>
-        {translations[select.currentLang]["manufacturerCountry"]}{" "}
+        {translations[props.currentLang]["manufacturerCountry"]}{" "}
         <b>
           {props.item?.madeIn?.title} {props.item?.madeIn?.code}
         </b>
       </p>
       <p>
-        {translations[select.currentLang]["category"]}{" "}
+        {translations[props.currentLang]["category"]}{" "}
         <b>{props.item?.category?.title}</b>
       </p>
       <p>
-        {translations[select.currentLang]["yearOfRelease"]}{" "}
+        {translations[props.currentLang]["yearOfRelease"]}{" "}
         <b>{props.item?.edition}</b>
       </p>
       <h2>
-        {translations[select.currentLang]["price"]}{" "}
+        {translations[props.currentLang]["price"]}{" "}
         {numberFormat(props.item?.price)} ₽
       </h2>
       <button onClick={callbacks.addToBasket}>
-        {translations[select.currentLang]["addBtn"]}
+        {translations[props.currentLang]["addBtn"]}
       </button>
     </div>
   );
@@ -58,10 +53,12 @@ ProductCard.propTypes = {
     title: PropTypes.string,
   }).isRequired,
   onAction: PropTypes.func,
+  currentLang: PropTypes.string,
 };
 
 ProductCard.defaultProps = {
   onAction: () => {},
+  currentLang: "ru",
 };
 
 export default memo(ProductCard);

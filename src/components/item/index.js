@@ -5,14 +5,9 @@ import { numberFormat } from "../../utils";
 import "./style.css";
 import { Link } from "react-router-dom";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
 
 function Item(props) {
   const cn = bem("Item");
-
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
 
   const callbacks = {
     onAdd: () => props.onAdd(props.item._id),
@@ -26,7 +21,7 @@ function Item(props) {
       <div className={cn("actions")}>
         <div className={cn("price")}>{numberFormat(props.item.price)} ₽</div>
         <button onClick={callbacks.onAdd}>
-          {translations[select.currentLang]["addBtn"]}
+          {translations[props.currentLang]["addBtn"]}
         </button>
       </div>
     </div>
@@ -40,10 +35,12 @@ Item.propTypes = {
     price: PropTypes.number,
   }).isRequired,
   onAdd: PropTypes.func,
+  currentLang: PropTypes.string,
 };
 
 Item.defaultProps = {
   onAdd: () => {},
+  currentLang: "ru",
 };
 
 export default memo(Item);

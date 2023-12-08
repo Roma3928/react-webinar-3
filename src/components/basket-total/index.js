@@ -4,18 +4,14 @@ import { cn as bem } from "@bem-react/classname";
 import { numberFormat } from "../../utils";
 import "./style.css";
 import translations from "../../translations";
-import useSelector from "../../store/hooks/use-selector";
 
-function BasketTotal({ sum }) {
+function BasketTotal({ sum, currentLang }) {
   const cn = bem("BasketTotal");
-  const select = useSelector((state) => ({
-    currentLang: state.language.lang,
-  }));
 
   return (
     <div className={cn()}>
       <span className={cn("cell")}>
-        {translations[select.currentLang]["totalInCart"]}
+        {translations[currentLang]["totalInCart"]}
       </span>
       <span className={cn("cell")}> {numberFormat(sum)} ₽</span>
       <span className={cn("cell")}></span>
@@ -25,10 +21,12 @@ function BasketTotal({ sum }) {
 
 BasketTotal.propTypes = {
   sum: PropTypes.number,
+  currentLang: PropTypes.string,
 };
 
 BasketTotal.defaultProps = {
   sum: 0,
+  currentLang: "ru",
 };
 
 export default memo(BasketTotal);

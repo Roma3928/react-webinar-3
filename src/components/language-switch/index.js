@@ -1,21 +1,17 @@
-import useStore from "../../store/hooks/use-store";
-import useSelector from "../../store/hooks/use-selector";
+import PropTypes from "prop-types";
 import "./style.css";
 
-function LanguageSwitch() {
-  const store = useStore();
-  const currentLang = useSelector((state) => state.language.lang);
-
+function LanguageSwitch(props) {
   const callbacks = {
     switchLang: (e) => {
-      store.actions.language.switchLang(e.target.value);
+      props.setLang(e.target.value);
     },
   };
 
   return (
     <select
       className="LanguageSwitch"
-      value={currentLang}
+      value={props.currentLang}
       onChange={callbacks.switchLang}
     >
       <option value="ru">ru</option>
@@ -23,5 +19,15 @@ function LanguageSwitch() {
     </select>
   );
 }
+
+LanguageSwitch.propTypes = {
+  setLang: PropTypes.func,
+  currentLang: PropTypes.string,
+};
+
+LanguageSwitch.defaultProps = {
+  setLang: () => {},
+  currentLang: "ru",
+};
 
 export default LanguageSwitch;

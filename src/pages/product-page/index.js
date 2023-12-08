@@ -16,6 +16,7 @@ function ProductPage() {
     product: state.product,
     amount: state.basket.amount,
     sum: state.basket.sum,
+    currentLang: state.language.lang,
   }));
 
   const [fetchProduct, isProductLoading, productError] = useFetching(
@@ -37,22 +38,35 @@ function ProductPage() {
       () => store.actions.modals.open("basket"),
       [store]
     ),
+    setLang: useCallback(
+      (lang) => store.actions.language.setLang(lang),
+      [store]
+    ),
   };
 
   return (
     <>
-      <Head title={select.product.title} />
+      <Head
+        title={select.product.title}
+        setLang={callbacks.setLang}
+        currentLang={select.currentLang}
+      />
       <BasketTool
         onOpen={callbacks.openModalBasket}
         amount={select.amount}
         sum={select.sum}
+        currentLang={select.currentLang}
       />
       {isProductLoading && (
         <div className="LoaderBox">
           <Loader />
         </div>
       )}
-      <ProductCard item={select.product} onAction={callbacks.addToBasket} />
+      <ProductCard
+        item={select.product}
+        onAction={callbacks.addToBasket}
+        currentLang={select.currentLang}
+      />
     </>
   );
 }
