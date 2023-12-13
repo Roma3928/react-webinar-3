@@ -1,3 +1,4 @@
+import { formatCategories } from "../../utils";
 import StoreModule from "../module";
 
 class CategoriesState extends StoreModule {
@@ -24,9 +25,11 @@ class CategoriesState extends StoreModule {
       );
       const json = await response.json();
 
+      const formattedData = formatCategories(json.result.items);
+
       this.setState(
         {
-          data: json.result.items,
+          data: formattedData,
           waiting: false,
         },
         "Загружены категории"
