@@ -1,0 +1,12 @@
+.AuthOptions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.AuthOptions-name {
+    font-size: 13px;
+    color: #0087E9;
+    text-decoration: underline;
+    text-decoration-color: #0087E9;
+}

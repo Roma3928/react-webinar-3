@@ -1,0 +1,16 @@
+.Field {
+    display: flex;
+    flex-direction: column;
+}
+
+.Field-input {
+    width: 203px;
+    height: 26px;
+    padding: 2px 3px;
+    box-sizing: border-box;
+}
+
+.Field-error {
+    color: #F00;
+    font-size: 11px;
+}

@@ -1,0 +1,11 @@
+.UserCard-title {
+    margin: 19px 0 30px;
+}
+
+.UserCard p {
+    font-size: 18px;
+}
+
+.UserCard span {
+    font-weight: 700;
+}
