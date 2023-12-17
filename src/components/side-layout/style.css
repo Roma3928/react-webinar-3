@@ -6,6 +6,7 @@
   margin-left: -5px;
   margin-right: -5px;
   align-items: center;
+  border: none;
 }
 
 .SideLayout_side_start {
@@ -30,6 +31,14 @@
 
 .SideLayout_padding_mixed {
   padding: 10px 15px;
+}
+
+.SideLayout_border_none {
+  border: none;
+}
+
+.SideLayout_border_small {
+  border-bottom: 1px solid #DCDCDC;
 }
 
 .SideLayout-item {

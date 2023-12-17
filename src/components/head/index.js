@@ -5,17 +5,12 @@ import UserPanel from "../../containers/user-panel";
 
 function Head({ title, children }) {
   return (
-    <>
-      <div className="Head-top">
-        <UserPanel />
+    <div className="Head">
+      <div className="Head-place">
+        <h1>{title}</h1>
       </div>
-      <div className="Head-bottom">
-        <div className="Head-place">
-          <h1>{title}</h1>
-        </div>
-        <div className="Head-place">{children}</div>
-      </div>
-    </>
+      <div className="Head-place">{children}</div>
+    </div>
   );
 }
 

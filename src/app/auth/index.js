@@ -9,9 +9,9 @@ import AuthForm from "../../components/auth-form";
 import useStore from "../../hooks/use-store";
 import { useAuth } from "../../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
-import useInit from "../../hooks/use-init";
 import Spinner from "../../components/spinner";
 import { useInput } from "../../hooks/use-input";
+import UserPanel from "../../containers/user-panel";
 
 function Auth() {
   const store = useStore();
@@ -28,23 +28,32 @@ function Auth() {
     },
   });
 
-  useInit(() => {
+  useEffect(() => {
     if (isAuth) {
-      navigate("/profile");
+      if (window.history.length > 1) {
+        navigate(-1);
+      } else {
+        navigate("/profile");
+      }
     }
   }, [isAuth, navigate]);
 
+  useEffect(() => {
+    store.actions.session.resetState();
+    store.actions.user.resetState();
+  }, []);
+
   const callbacks = {
     login: useCallback(
-      (login, password) => store.actions.user.login({ login, password }),
+      (login, password) => store.actions.session.login({ login, password }),
       [store]
     ),
-    logout: useCallback(() => store.actions.user.logout(), [store]),
   };
 
   const { t } = useTranslate();
   return (
     <PageLayout>
+      <UserPanel />
       <Head title={t("title")}>
         <LocaleSelect />
       </Head>

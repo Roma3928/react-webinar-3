@@ -9,13 +9,9 @@ function AuthOptions(props) {
       {props.isAuth ? (
         <>
           <Link to="/profile">
-            <span className="AuthOptions-name">
-              {props.userInfo.profile?.name}
-            </span>
+            <span className="AuthOptions-name">{props.userName}</span>
           </Link>
-          <Link to="/login">
-            <button onClick={props.logout}>{props.t("logout")}</button>
-          </Link>
+          <button onClick={props.logout}>{props.t("logout")}</button>
         </>
       ) : (
         <Link to="/login">
@@ -28,11 +24,7 @@ function AuthOptions(props) {
 
 AuthOptions.propTypes = {
   isAuth: PropTypes.bool,
-  userInfo: PropTypes.shape({
-    profile: PropTypes.shape({
-      name: PropTypes.string,
-    }),
-  }).isRequired,
+  userName: PropTypes.string,
   t: PropTypes.func,
   logout: PropTypes.func,
 };

@@ -1,4 +1,3 @@
-import { useCallback, useContext, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import useSelector from "../hooks/use-selector";
 import Main from "./main";
@@ -19,7 +18,7 @@ function App() {
   const activeModal = useSelector((state) => state.modals.name);
 
   useInit(() => {
-    store.actions.user.loadUserInfo();
+    store.actions.session.loadUserInfo();
   }, []);
 
   return (

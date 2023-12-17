@@ -11,14 +11,14 @@ function UserPanel() {
   const { t } = useTranslate();
 
   const callbacks = {
-    logout: useCallback(() => store.actions.user.logout(), [store]),
+    logout: useCallback(() => store.actions.session.logout(), [store]),
   };
 
   return (
-    <SideLayout side="end" padding="mixed">
+    <SideLayout side="end" padding="mixed" border="small">
       <AuthOptions
         isAuth={isAuth}
-        userInfo={userInfo}
+        userName={userInfo.name}
         t={t}
         logout={callbacks.logout}
       />
