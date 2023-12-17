@@ -1,31 +1,42 @@
-import { forwardRef } from "react";
 import "./style.css";
 import PropTypes from "prop-types";
 
-const Field = forwardRef(({ title, type, error, ...rest }, ref) => {
+const Field = (props) => {
   return (
     <div className="Field">
-      <label>{title}</label>
-      <input className="Field-input" ref={ref} type={type} {...rest} />
-      {error && <span className="Field-error">{error.message}</span>}
+      <label>{props.title}</label>
+      <input
+        className="Field-input"
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+        value={props.value}
+        type={props.type}
+      />
+      {props.isDirty && props.error && (
+        <span className="Field-error">{props.error}</span>
+      )}
     </div>
   );
-});
+};
 
 Field.propTypes = {
   title: PropTypes.string,
   type: PropTypes.string,
-  error: PropTypes.object,
-  rest: PropTypes.object,
+  error: PropTypes.string,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  isDirty: PropTypes.bool,
 };
 
 Field.defaultProps = {
   title: "",
   type: "text",
-  error: {},
-  rest: {},
+  error: "",
+  value: "",
+  onChange: () => {},
+  onBlur: () => {},
+  isDirty: false,
 };
-
-Field.displayName = "Field";
 
 export default Field;

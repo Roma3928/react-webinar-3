@@ -40,7 +40,7 @@ export function formatCategories(categories) {
   const addCategoryWithDash = (category, dash) => {
     const formattedCategory = {
       ...category,
-      title: `${"-".repeat(dash)} ${category.title}`,
+      title: `${"- ".repeat(dash)} ${category.title}`,
     };
     formattedCategories.push(formattedCategory);
 

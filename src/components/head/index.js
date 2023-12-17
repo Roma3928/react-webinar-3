@@ -1,13 +1,15 @@
 import { memo } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
-import AuthOptions from "../../containers/auth-options";
+import UserPanel from "../../containers/user-panel";
 
 function Head({ title, children }) {
   return (
     <>
-      <AuthOptions />
-      <div className="Head">
+      <div className="Head-top">
+        <UserPanel />
+      </div>
+      <div className="Head-bottom">
         <div className="Head-place">
           <h1>{title}</h1>
         </div>

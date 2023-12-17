@@ -11,11 +11,22 @@ import { useAuth } from "../../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import useInit from "../../hooks/use-init";
 import Spinner from "../../components/spinner";
+import { useInput } from "../../hooks/use-input";
 
 function Auth() {
   const store = useStore();
   const navigate = useNavigate();
   const { isAuth, error, waiting } = useAuth();
+  const loginValue = useInput("", {
+    isEmpty: { message: "Логин нужно заполнить!" },
+  });
+  const passwordValue = useInput("", {
+    isEmpty: { message: "Пароль нужно заполнить!" },
+    minLength: {
+      value: 6,
+      message: "Минимальная длина пароля 6 символов",
+    },
+  });
 
   useInit(() => {
     if (isAuth) {
@@ -24,7 +35,10 @@ function Auth() {
   }, [isAuth, navigate]);
 
   const callbacks = {
-    login: useCallback((data) => store.actions.user.login(data), [store]),
+    login: useCallback(
+      (login, password) => store.actions.user.login({ login, password }),
+      [store]
+    ),
     logout: useCallback(() => store.actions.user.logout(), [store]),
   };
 
@@ -37,7 +51,13 @@ function Auth() {
       <Navigation />
       <SideLayout padding="medium">
         <Spinner active={waiting}>
-          <AuthForm t={t} login={callbacks.login} serverError={error} />
+          <AuthForm
+            t={t}
+            login={callbacks.login}
+            serverError={error}
+            loginValue={loginValue}
+            passwordValue={passwordValue}
+          />
         </Spinner>
       </SideLayout>
     </PageLayout>

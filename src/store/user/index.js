@@ -39,7 +39,7 @@ class UserState extends StoreModule {
         this.setState({
           ...this.getState(),
           waiting: false,
-          error: json.error.message,
+          error: json.error.data?.issues[0].message,
         });
       }
     } catch (e) {
