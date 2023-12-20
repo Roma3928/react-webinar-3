@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import useTranslate from "../../hooks/use-translate";
@@ -15,7 +15,6 @@ import shallowequal from "shallowequal";
 import articleActions from "../../store-redux/article/actions";
 import commentsActions from "../../store-redux/comments/actions";
 import Comments from "../../components/comments";
-import SideLayout from "../../components/side-layout";
 import treeToList from "../../utils/tree-to-list";
 import listToTree from "../../utils/list-to-tree";
 import useSelector from "../../hooks/use-selector";
@@ -27,13 +26,14 @@ function Article() {
   // Параметры из пути /articles/:id
 
   const params = useParams();
+  const [activeReplyId, setActiveReplyId] = useState(null);
 
   useInit(() => {
     dispatch(articleActions.load(params.id));
     dispatch(commentsActions.load(params.id));
   }, [params.id]);
 
-  const select = useSelectorRedux(
+  const selectRedux = useSelectorRedux(
     (state) => ({
       article: state.article.data,
       waiting: state.article.waiting,
@@ -43,7 +43,10 @@ function Article() {
     shallowequal
   ); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
-  const exists = useSelector((state) => state.session.exists);
+  const select = useSelector((state) => ({
+    exists: state.session.exists,
+    userName: state.session.user.profile?.name,
+  }));
 
   const { t } = useTranslate();
 
@@ -54,55 +57,61 @@ function Article() {
       [store]
     ),
     addComment: useCallback(
-      (text) =>
+      (text) => {
+        const parent = activeReplyId
+          ? { _id: activeReplyId, _type: "comment" }
+          : { _id: params.id, _type: "article" };
+
         dispatch(
-          commentsActions.addNewComment({
-            text,
-            parent: { _id: params.id, _type: "article" },
-          })
-        ),
-      [dispatch]
+          commentsActions.addComment(
+            {
+              text,
+              parent,
+            },
+            select.userName
+          )
+        );
+      },
+      [dispatch, select.userName, activeReplyId]
     ),
   };
 
-  // const options = {
-  //   comments: useMemo(
-  //     () => [
-  //       ...treeToList(listToTree(select.comments), (item, level) => ({
-  //         ...item,
-  //         value: item._id,
-  //         text: "- ".repeat(level) + item.text,
-  //       })),
-  //     ],
-  //     [select.comments]
-  //   ),
-  // };
-
-  // console.log(options.comments);
+  const options = {
+    comments: useMemo(
+      () =>
+        [
+          ...treeToList(listToTree(selectRedux.comments), (item, level) => ({
+            ...item,
+            level: level - 1,
+          })),
+        ].slice(1),
+      [selectRedux.comments]
+    ),
+  };
 
   return (
     <PageLayout>
       <TopHead />
-      <Head title={select.article.title}>
+      <Head title={selectRedux.article.title}>
         <LocaleSelect />
       </Head>
       <Navigation />
-      <Spinner active={select.waiting}>
+      <Spinner active={selectRedux.waiting}>
         <ArticleCard
-          article={select.article}
+          article={selectRedux.article}
           onAdd={callbacks.addToBasket}
           t={t}
         />
       </Spinner>
-      <SideLayout padding="large">
-        <Comments
-          items={select.comments}
-          count={select.commentsCount}
-          t={t}
-          exists={exists}
-          addComment={callbacks.addComment}
-        />
-      </SideLayout>
+      <Comments
+        items={options.comments}
+        count={selectRedux.commentsCount}
+        t={t}
+        exists={select.exists}
+        addComment={callbacks.addComment}
+        activeReplyId={activeReplyId}
+        setActiveReplyId={setActiveReplyId}
+      />
     </PageLayout>
   );
 }

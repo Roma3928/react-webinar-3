@@ -10,6 +10,8 @@ function CommentForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.onSubmit(value);
+    setValue("");
+    props.onClickOnCancelBtn();
   };
 
   return (
@@ -19,10 +21,21 @@ function CommentForm(props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         className={cn("textarea")}
+        required
       ></textarea>
       <div>
         <button className={cn("Submitbtn")}>Отправить</button>
-        {props.reply && <button className={cn("cancelBtn")}>Отмена</button>}
+        {props.reply && (
+          <button
+            className={cn("cancelBtn")}
+            onClick={(e) => {
+              e.preventDefault();
+              props.onClickOnCancelBtn();
+            }}
+          >
+            Отмена
+          </button>
+        )}
       </div>
     </form>
   );
@@ -32,11 +45,13 @@ CommentForm.propTypes = {
   title: PropTypes.string,
   reply: PropTypes.bool,
   t: PropTypes.func,
+  onClickOnCancelBtn: PropTypes.func,
 };
 
 CommentForm.defaultProps = {
   title: "",
   reply: false,
+  onClickOnCancelBtn: () => {},
   t: (text) => text,
 };
 

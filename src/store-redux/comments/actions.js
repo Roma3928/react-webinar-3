@@ -25,7 +25,7 @@ export default {
     };
   },
 
-  addNewComment: (comment) => {
+  addComment: (comment, userName) => {
     return async (dispatch, getState, services) => {
       dispatch({ type: "comments/addComment-start" });
 
@@ -35,10 +35,16 @@ export default {
           method: "POST",
           body: JSON.stringify(comment),
         });
+
         dispatch({
           type: "comments/addComment-success",
           payload: {
-            comment: res.data.result,
+            comment: {
+              ...res.data.result,
+              author: {
+                profile: { _id: res.data.result.author._id, name: userName },
+              },
+            },
           },
         });
       } catch (e) {

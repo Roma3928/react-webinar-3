@@ -6,18 +6,20 @@ function AccessControlMessage(props) {
   return (
     <p className="AccessControlMessage">
       <Link to="/login">Войдите</Link>, {props.actionText}.{" "}
-      {props.reply && <span>Отмена</span>}
+      {props.reply && <span onClick={props.onClickOnCancelBtn}>Отмена</span>}
     </p>
   );
 }
 
 AccessControlMessage.propTypes = {
   actionText: PropTypes.string,
+  onClickOnCancelBtn: PropTypes.func,
   reply: PropTypes.bool,
 };
 
 AccessControlMessage.defaultProps = {
   actionText: "",
+  onClickOnCancelBtn: () => {},
   reply: false,
 };
 

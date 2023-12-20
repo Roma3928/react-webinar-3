@@ -1,6 +1,5 @@
 export const initialState = {
   items: [],
-  comment: {},
   count: 0,
   waiting: false,
 };
@@ -19,23 +18,22 @@ function reducer(state = initialState, action) {
       };
 
     case "comments/load-error":
-      return { ...state, items: [], count: 0, waiting: false }; //@todo текст ошибки сохранять?
+      return { ...state, items: [], count: 0, waiting: false };
 
     case "comments/addComment-start":
-      return { ...state, comment: {}, waiting: true };
+      return { ...state, waiting: true };
 
     case "comments/addComment-success":
       return {
         ...state,
-        items: [...items, { ...action.payload.comment }],
+        items: [...state.items, action.payload.comment],
         waiting: false,
       };
 
     case "comments/addComment-error":
-      return { ...state, comment: {}, waiting: false }; //@todo текст ошибки сохранять?
+      return { ...state, waiting: false };
 
     default:
-      // Нет изменений
       return state;
   }
 }
