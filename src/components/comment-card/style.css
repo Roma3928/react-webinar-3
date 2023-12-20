@@ -1,0 +1,31 @@
+.CommentCard {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.CommentCard p {
+    margin: 0;
+}
+
+.CommentCard-user {
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.CommentCard-date,
+.CommentCard-time {
+    color: #666;
+}
+
+.CommentCard-text {
+    font-size: 14px
+}
+
+.CommentCard-reply {
+    color: #0087E9;
+    cursor: pointer;
+}
