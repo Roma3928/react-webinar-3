@@ -1,6 +1,6 @@
 import { cn as bem } from "@bem-react/classname";
 import "./style.css";
-import PropTypes, { string } from "prop-types";
+import PropTypes from "prop-types";
 import formatDate from "../../utils/format-date";
 import CommentForm from "../comment-form";
 import AccessControlMessage from "../access-control-message";
@@ -40,12 +40,15 @@ function CommentCard(props) {
             reply={true}
             onSubmit={props.addComment}
             onClickOnCancelBtn={props.onClickOnCancelBtn}
+            setPage={props.setPage}
+            totalPages={props.totalPages}
           />
         ) : (
           <AccessControlMessage
             actionText="чтобы иметь возможность ответить"
             reply={true}
             onClickOnCancelBtn={props.onClickOnCancelBtn}
+            onSignIn={props.onSignIn}
           />
         ))}
     </div>

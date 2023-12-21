@@ -3,13 +3,16 @@
     font-size: 16px;
 }
 
-.AccessControlMessage a {
-    margin: 0;
+.AccessControlMessage-signIn,
+.AccessControlMessage-cancelBtn {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.AccessControlMessage-signIn {
     color: #0087E9;
 }
 
-.AccessControlMessage span {
+.AccessControlMessage-cancelBtn {
     color: #666;
-    cursor: pointer;
-    text-decoration: underline;
 }

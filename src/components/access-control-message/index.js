@@ -1,24 +1,35 @@
-import { Link } from "react-router-dom";
 import "./style.css";
 import PropTypes from "prop-types";
 
 function AccessControlMessage(props) {
   return (
     <p className="AccessControlMessage">
-      <Link to="/login">Войдите</Link>, {props.actionText}.{" "}
-      {props.reply && <span onClick={props.onClickOnCancelBtn}>Отмена</span>}
+      <span className="AccessControlMessage-signIn" onClick={props.onSignIn}>
+        Войдите
+      </span>
+      , {props.actionText}.{" "}
+      {props.reply && (
+        <span
+          className="AccessControlMessage-cancelBtn"
+          onClick={props.onClickOnCancelBtn}
+        >
+          Отмена
+        </span>
+      )}
     </p>
   );
 }
 
 AccessControlMessage.propTypes = {
   actionText: PropTypes.string,
+  onSignIn: PropTypes.func,
   onClickOnCancelBtn: PropTypes.func,
   reply: PropTypes.bool,
 };
 
 AccessControlMessage.defaultProps = {
   actionText: "",
+  onSignIn: () => {},
   onClickOnCancelBtn: () => {},
   reply: false,
 };
