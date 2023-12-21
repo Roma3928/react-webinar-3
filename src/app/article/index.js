@@ -26,7 +26,7 @@ function Article() {
 
   useInit(() => {
     dispatch(articleActions.load(params.id));
-    // dispatch(commentsActions.load(params.id));
+    dispatch(commentsActions.load(params.id));
   }, [params.id]);
 
   const selectRedux = useSelectorRedux(
@@ -39,9 +39,9 @@ function Article() {
     shallowequal
   ); // Нужно указать функцию для сравнения свойства объекта, так как хуком вернули объект
 
-  useEffect(() => {
-    dispatch(commentsActions.load(params.id));
-  }, [selectRedux.page, params.id]);
+  // useEffect(() => {
+  //   dispatch(commentsActions.load(params.id));
+  // }, [selectRedux.page, params.id]);
 
   const callbacks = {
     // Добавление в корзину

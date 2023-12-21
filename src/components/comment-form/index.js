@@ -9,7 +9,6 @@ function CommentForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // props.setPage(props.totalPages);
     props.onSubmit(value);
     setValue("");
     props.onClickOnCancelBtn();

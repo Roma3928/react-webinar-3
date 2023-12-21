@@ -8,18 +8,22 @@ export default {
     return async (dispatch, getState, services) => {
       dispatch({ type: "comments/load-start" });
       try {
-        const apiParams = {
-          limit: getState().comments.params.limit,
-          skip:
-            (getState().comments.params.page - 1) *
-            getState().comments.params.limit,
-          fields:
-            "items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count",
-          "search[parent]": id,
-        };
+        // const apiParams = {
+        //   limit: getState().comments.params.limit,
+        //   skip:
+        //     (getState().comments.params.page - 1) *
+        //     getState().comments.params.limit,
+        //   fields:
+        //     "items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count",
+        //   "search[parent]": id,
+        // };
+
+        // const res = await services.api.request({
+        //   url: `/api/v1/comments?${new URLSearchParams(apiParams)}`,
+        // });
 
         const res = await services.api.request({
-          url: `/api/v1/comments?${new URLSearchParams(apiParams)}`,
+          url: `/api/v1/comments?fields=items(_id,text,dateCreate,author(profile(name)),parent(_id,_type),isDeleted),count&limit=*&search[parent]=${id}`,
         });
 
         const totalPages = Math.ceil(

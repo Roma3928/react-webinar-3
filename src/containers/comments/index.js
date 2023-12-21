@@ -14,7 +14,7 @@ import CommentsWrapper from "../../components/comments-wrapper";
 import commentsActions from "../../store-redux/comments/actions";
 
 function Comments() {
-  const lastElementRef = useRef();
+  // const lastElementRef = useRef();
   const [activeReplyId, setActiveReplyId] = useState(null);
   const dispatch = useDispatch();
   const { t } = useTranslate();
@@ -69,12 +69,12 @@ function Comments() {
     onSignIn: useCallback(() => {
       navigate("/login", { state: { back: location.pathname } });
     }, [location.pathname]),
-    setPage: useCallback(
-      (page) => {
-        dispatch(commentsActions.setPage(page));
-      },
-      [dispatch]
-    ),
+    // setPage: useCallback(
+    //   (page) => {
+    //     dispatch(commentsActions.setPage(page));
+    //   },
+    //   [dispatch]
+    // ),
   };
 
   const options = {
@@ -90,20 +90,22 @@ function Comments() {
     ),
   };
 
-  useObserver(
-    lastElementRef,
-    selectRedux.page < selectRedux.totalPages,
-    selectRedux.commentsWaiting,
-    () => {
-      // dispatch(commentsActions.setPage(selectRedux.page + 1));
-      callbacks.setPage(selectRedux.page + 1);
-    }
-  );
+  // console.log(selectRedux.comments);
+  // console.log(options.comments);
+
+  // useObserver(
+  //   lastElementRef,
+  //   selectRedux.page < selectRedux.totalPages,
+  //   selectRedux.commentsWaiting,
+  //   () => {
+  //     callbacks.setPage(selectRedux.page + 1);
+  //   }
+  // );
 
   return (
     <CommentsWrapper
       title={`${t("comments.title")} (${selectRedux.commentsCount})`}
-      lastElementRef={lastElementRef}
+      // lastElementRef={lastElementRef}
     >
       {options.comments.map((item) => (
         <CommentCard
@@ -116,8 +118,6 @@ function Comments() {
           addComment={callbacks.addComment}
           onClickOnCancelBtn={onClickOnCancelBtn}
           onSignIn={callbacks.onSignIn}
-          setPage={callbacks.setPage}
-          totalPages={selectRedux.totalPages}
         />
       ))}
 
@@ -127,8 +127,6 @@ function Comments() {
             title="Новый комментарий"
             reply={false}
             onSubmit={callbacks.addComment}
-            setPage={callbacks.setPage}
-            totalPages={selectRedux.totalPages}
           />
         ) : (
           <AccessControlMessage

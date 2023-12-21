@@ -17,7 +17,8 @@ function reducer(state = initialState, action) {
     case "comments/load-success":
       return {
         ...state,
-        items: [...state.items, ...action.payload.items],
+        // items: [...state.items, ...action.payload.items],
+        items: action.payload.items,
         count: action.payload.count,
         params: {
           page: state.params.page,

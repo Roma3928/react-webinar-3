@@ -18,6 +18,10 @@ const config = {
   api: {
     baseUrl: "",
   },
+  i18n: {
+    langHeader: "X-Lang",
+    defaultLang: "ru",
+  },
 };
 
 export default config;

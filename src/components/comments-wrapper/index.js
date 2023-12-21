@@ -6,10 +6,10 @@ function CommentsWrapper({ title, children, lastElementRef }) {
     <div className="CommentsWrapper">
       <h2 className="CommentsWrapper-title">{title}</h2>
       {children}
-      <div
+      {/* <div
         className="CommentsWrapper-lastElementRef"
         ref={lastElementRef}
-      ></div>
+      ></div> */}
     </div>
   );
 }

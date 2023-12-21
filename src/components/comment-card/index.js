@@ -40,8 +40,6 @@ function CommentCard(props) {
             reply={true}
             onSubmit={props.addComment}
             onClickOnCancelBtn={props.onClickOnCancelBtn}
-            setPage={props.setPage}
-            totalPages={props.totalPages}
           />
         ) : (
           <AccessControlMessage
