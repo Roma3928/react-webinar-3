@@ -18,7 +18,11 @@ function CommentCard(props) {
       style={{ paddingLeft: `${props.comment.level * 30}px` }}
     >
       <p className={cn("head")}>
-        <span className={cn("user")}>
+        <span
+          className={cn("user", {
+            auth: props.authUserId === props.comment.author._id,
+          })}
+        >
           {props.comment.author?.profile?.name}
         </span>
         <span className={cn("date")}>{date}</span>{" "}

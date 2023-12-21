@@ -13,7 +13,8 @@
 }
 
 .CommentCard-date,
-.CommentCard-time {
+.CommentCard-time,
+.CommentCard-user_auth {
     color: #666;
 }
 

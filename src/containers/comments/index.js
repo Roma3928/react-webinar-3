@@ -37,6 +37,7 @@ function Comments() {
   const select = useSelector((state) => ({
     exists: state.session.exists,
     userName: state.session.user.profile?.name,
+    authUserId: state.session.user._id,
   }));
 
   const handleReplyFooterVisibility = (commentId) => {
@@ -118,6 +119,7 @@ function Comments() {
           addComment={callbacks.addComment}
           onClickOnCancelBtn={onClickOnCancelBtn}
           onSignIn={callbacks.onSignIn}
+          authUserId={select.authUserId}
         />
       ))}
 
