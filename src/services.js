@@ -1,5 +1,6 @@
 import APIService from "./api";
 import Store from "./store";
+import I18nService from "./i18n";
 import createStoreRedux from "./store-redux";
 
 class Services {

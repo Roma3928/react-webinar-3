@@ -5,9 +5,13 @@ class I18nService {
     this.services = services;
     this.config = config;
     this.lang = config.defaultLang;
+    this.listeners = [];
+    this.translate = this.translate.bind(this);
   }
 
-  translate(lang, text, plural) {
+  translate(text, plural, lang) {
+    lang = lang || this.lang;
+
     let result =
       translations[lang] && text in translations[lang]
         ? translations[lang][text]
@@ -22,4 +26,24 @@ class I18nService {
 
     return result;
   }
+
+  setLang(currentLang) {
+    if (this.lang !== currentLang) {
+      this.lang = currentLang;
+      this.notifySubscribers();
+    }
+  }
+
+  notifySubscribers() {
+    this.listeners.forEach((listener) => listener(this.lang));
+  }
+
+  subscribe(listener) {
+    this.listeners.push(listener);
+    return () => {
+      this.listeners = this.listeners.filter((item) => item !== listener);
+    };
+  }
 }
+
+export default I18nService;
