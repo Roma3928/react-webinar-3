@@ -18,6 +18,7 @@
   },
   "article.add": "Добавить",
   "filter.reset": "Сбросить",
+  "categories.all": "Все",
   "auth.title": "Вход",
   "auth.login": "Логин",
   "auth.password": "Пароль",

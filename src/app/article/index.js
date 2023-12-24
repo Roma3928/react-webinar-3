@@ -21,11 +21,14 @@ function Article() {
   const dispatch = useDispatch();
   // Параметры из пути /articles/:id
 
-  const { t } = useTranslate();
+  const { t, lang } = useTranslate();
   const params = useParams();
 
   useInit(() => {
     dispatch(articleActions.load(params.id));
+  }, [params.id, lang]);
+
+  useEffect(() => {
     dispatch(commentsActions.load(params.id));
   }, [params.id]);
 

@@ -15,6 +15,7 @@ import commentsActions from "../../store-redux/comments/actions";
 
 function Comments() {
   // const lastElementRef = useRef();
+  const scrollElementRef = useRef();
   const [activeReplyId, setActiveReplyId] = useState(null);
   const dispatch = useDispatch();
   const { t } = useTranslate();
@@ -39,14 +40,6 @@ function Comments() {
     userName: state.session.user.profile?.name,
     authUserId: state.session.user._id,
   }));
-
-  const handleReplyFooterVisibility = (commentId) => {
-    setActiveReplyId(commentId === activeReplyId ? null : commentId);
-  };
-
-  const onClickOnCancelBtn = () => {
-    setActiveReplyId(null);
-  };
 
   const callbacks = {
     addComment: useCallback(
@@ -76,6 +69,13 @@ function Comments() {
     //   },
     //   [dispatch]
     // ),
+
+    onClickOnCancelBtn: useCallback(() => setActiveReplyId(null), []),
+    handleReplyFooterVisibility: useCallback(
+      (commentId) =>
+        setActiveReplyId(commentId === activeReplyId ? null : commentId),
+      [activeReplyId]
+    ),
   };
 
   const options = {
@@ -91,9 +91,6 @@ function Comments() {
     ),
   };
 
-  // console.log(selectRedux.comments);
-  // console.log(options.comments);
-
   // useObserver(
   //   lastElementRef,
   //   selectRedux.page < selectRedux.totalPages,
@@ -102,6 +99,19 @@ function Comments() {
   //     callbacks.setPage(selectRedux.page + 1);
   //   }
   // );
+
+  const lastChildActiveReply = options.comments.findLast(
+    (comment) => comment.parent._id === activeReplyId
+  );
+
+  const lastChildActiveReplyId = lastChildActiveReply?._id ?? activeReplyId;
+
+  useEffect(() => {
+    scrollElementRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [lastChildActiveReplyId]);
 
   return (
     <CommentsWrapper
@@ -114,12 +124,13 @@ function Comments() {
           comment={item}
           t={t}
           exists={select.exists}
-          activeReplyId={activeReplyId}
-          handleReplyFooterVisibility={handleReplyFooterVisibility}
+          lastChildActiveReplyId={lastChildActiveReplyId}
+          handleReplyFooterVisibility={callbacks.handleReplyFooterVisibility}
           addComment={callbacks.addComment}
-          onClickOnCancelBtn={onClickOnCancelBtn}
+          onClickOnCancelBtn={callbacks.onClickOnCancelBtn}
           onSignIn={callbacks.onSignIn}
           authUserId={select.authUserId}
+          scrollElementRef={scrollElementRef}
         />
       ))}
 

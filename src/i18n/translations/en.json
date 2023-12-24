@@ -16,6 +16,7 @@
   },
   "article.add": "Add",
   "filter.reset": "Reset",
+  "categories.all": "All",
   "auth.title": "Sign In",
   "auth.login": "Login",
   "auth.password": "Password",

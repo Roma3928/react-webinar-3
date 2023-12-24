@@ -15,7 +15,11 @@ function CommentCard(props) {
   return (
     <div
       className={cn()}
-      style={{ paddingLeft: `${props.comment.level * 30}px` }}
+      style={{
+        paddingLeft: `${
+          (props.comment.level < 5 ? props.comment.level : 5) * 30
+        }px`,
+      }}
     >
       <p className={cn("head")}>
         <span
@@ -37,22 +41,25 @@ function CommentCard(props) {
       >
         {props.t("comments.reply")}
       </p>
-      {props.activeReplyId === props.comment._id &&
-        (props.exists ? (
-          <CommentForm
-            title="Новый ответ"
-            reply={true}
-            onSubmit={props.addComment}
-            onClickOnCancelBtn={props.onClickOnCancelBtn}
-          />
-        ) : (
-          <AccessControlMessage
-            actionText="чтобы иметь возможность ответить"
-            reply={true}
-            onClickOnCancelBtn={props.onClickOnCancelBtn}
-            onSignIn={props.onSignIn}
-          />
-        ))}
+      {props.lastChildActiveReplyId === props.comment._id && (
+        <div ref={props.scrollElementRef}>
+          {props.exists ? (
+            <CommentForm
+              title="Новый ответ"
+              reply={true}
+              onSubmit={props.addComment}
+              onClickOnCancelBtn={props.onClickOnCancelBtn}
+            />
+          ) : (
+            <AccessControlMessage
+              actionText="чтобы иметь возможность ответить"
+              reply={true}
+              onClickOnCancelBtn={props.onClickOnCancelBtn}
+              onSignIn={props.onSignIn}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -66,17 +73,18 @@ CommentCard.propTypes = {
     text: PropTypes.string,
     level: PropTypes.number,
   }).isRequired,
-  activeReplyId: PropTypes.oneOfType([
-    PropTypes.oneOf([null]),
-    PropTypes.string,
-  ]),
+  lastChildActiveReplyId: PropTypes.string,
   handleReplyFooterVisibility: PropTypes.func,
   addComment: PropTypes.func,
   t: PropTypes.func,
+  scrollElementRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
 };
 
 CommentCard.defaultProps = {
-  activeReplyId: null,
+  lastChildActiveReplyId: "",
   handleReplyFooterVisibility: () => {},
   t: (text) => text,
 };

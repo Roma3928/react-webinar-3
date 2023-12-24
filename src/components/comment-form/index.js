@@ -9,9 +9,14 @@ function CommentForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.onSubmit(value);
-    setValue("");
-    props.onClickOnCancelBtn();
+
+    if (value.trim()) {
+      props.onSubmit(value);
+      setValue("");
+      props.onClickOnCancelBtn();
+    } else {
+      alert("Пустой комментарий, введите текст");
+    }
   };
 
   return (
