@@ -17,6 +17,10 @@ function Comments() {
   // const lastElementRef = useRef();
   const scrollElementRef = useRef();
   const [activeReplyId, setActiveReplyId] = useState(null);
+  const [lastChildActiveReply, setLastChildActiveReply] = useState({
+    id: "",
+    level: 0,
+  });
   const dispatch = useDispatch();
   const { t } = useTranslate();
   const params = useParams();
@@ -58,7 +62,7 @@ function Comments() {
           )
         );
       },
-      [dispatch, select.userName, activeReplyId]
+      [dispatch, select.userName, activeReplyId, params.id]
     ),
     onSignIn: useCallback(() => {
       navigate("/login", { state: { back: location.pathname } });
@@ -70,10 +74,15 @@ function Comments() {
     //   [dispatch]
     // ),
 
-    onClickOnCancelBtn: useCallback(() => setActiveReplyId(null), []),
+    onClickOnCancelBtn: useCallback(() => {
+      setActiveReplyId(null);
+      setLastChildActiveReply({ id: "", level: 0 });
+    }, []),
     handleReplyFooterVisibility: useCallback(
-      (commentId) =>
-        setActiveReplyId(commentId === activeReplyId ? null : commentId),
+      (commentId, lastChildCommentId, level) => {
+        setActiveReplyId(commentId === activeReplyId ? null : commentId);
+        setLastChildActiveReply({ id: lastChildCommentId, level });
+      },
       [activeReplyId]
     ),
   };
@@ -100,18 +109,12 @@ function Comments() {
   //   }
   // );
 
-  const lastChildActiveReply = options.comments.findLast(
-    (comment) => comment.parent._id === activeReplyId
-  );
-
-  const lastChildActiveReplyId = lastChildActiveReply?._id ?? activeReplyId;
-
   useEffect(() => {
     scrollElementRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-  }, [lastChildActiveReplyId]);
+  }, [lastChildActiveReply]);
 
   return (
     <CommentsWrapper
@@ -124,7 +127,8 @@ function Comments() {
           comment={item}
           t={t}
           exists={select.exists}
-          lastChildActiveReplyId={lastChildActiveReplyId}
+          lastChildActiveReply={lastChildActiveReply}
+          activeReplyId={activeReplyId}
           handleReplyFooterVisibility={callbacks.handleReplyFooterVisibility}
           addComment={callbacks.addComment}
           onClickOnCancelBtn={callbacks.onClickOnCancelBtn}

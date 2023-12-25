@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import formatDate from "../../utils/format-date";
 import CommentForm from "../comment-form";
 import AccessControlMessage from "../access-control-message";
+import { getDeepestChildId } from "../../utils/get-deepest-child-id";
+import IndentLayout from "../indent-layout";
 
 function CommentCard(props) {
   const cn = bem("CommentCard");
@@ -13,53 +15,62 @@ function CommentCard(props) {
   );
 
   return (
-    <div
-      className={cn()}
-      style={{
-        paddingLeft: `${
-          (props.comment.level < 5 ? props.comment.level : 5) * 30
-        }px`,
-      }}
-    >
-      <p className={cn("head")}>
-        <span
-          className={cn("user", {
-            auth: props.authUserId === props.comment.author._id,
-          })}
+    <div className={cn()}>
+      <IndentLayout сurrentLevel={props.comment.level} maxLevel={5} indent={30}>
+        <p className={cn("head")}>
+          <span
+            className={cn("user", {
+              auth: props.authUserId === props.comment.author._id,
+            })}
+          >
+            {props.comment.author?.profile?.name}
+          </span>
+          <span className={cn("date")}>{date}</span>{" "}
+          <span className={cn("time")}>
+            {props.t("an")} {time}
+          </span>
+        </p>
+        <p className={cn("text")}>{props.comment.text}</p>
+        <p
+          className={cn("reply")}
+          onClick={() =>
+            props.handleReplyFooterVisibility(
+              props.comment._id,
+              getDeepestChildId(props.comment),
+              props.comment.level
+            )
+          }
         >
-          {props.comment.author?.profile?.name}
-        </span>
-        <span className={cn("date")}>{date}</span>{" "}
-        <span className={cn("time")}>
-          {props.t("an")} {time}
-        </span>
-      </p>
-      <p className={cn("text")}>{props.comment.text}</p>
-      <p
-        className={cn("reply")}
-        onClick={() => props.handleReplyFooterVisibility(props.comment._id)}
-      >
-        {props.t("comments.reply")}
-      </p>
-      {props.lastChildActiveReplyId === props.comment._id && (
-        <div ref={props.scrollElementRef}>
-          {props.exists ? (
-            <CommentForm
-              title="Новый ответ"
-              reply={true}
-              onSubmit={props.addComment}
-              onClickOnCancelBtn={props.onClickOnCancelBtn}
-            />
-          ) : (
-            <AccessControlMessage
-              actionText="чтобы иметь возможность ответить"
-              reply={true}
-              onClickOnCancelBtn={props.onClickOnCancelBtn}
-              onSignIn={props.onSignIn}
-            />
-          )}
-        </div>
-      )}
+          {props.t("comments.reply")}
+        </p>
+      </IndentLayout>
+
+      {props.lastChildActiveReply.id === props.comment._id &&
+        props.activeReplyId && (
+          <div ref={props.scrollElementRef}>
+            <IndentLayout
+              сurrentLevel={props.lastChildActiveReply.level + 1}
+              maxLevel={5}
+              indent={30}
+            >
+              {props.exists ? (
+                <CommentForm
+                  title="Новый ответ"
+                  reply={true}
+                  onSubmit={props.addComment}
+                  onClickOnCancelBtn={props.onClickOnCancelBtn}
+                />
+              ) : (
+                <AccessControlMessage
+                  actionText="чтобы иметь возможность ответить"
+                  reply={true}
+                  onClickOnCancelBtn={props.onClickOnCancelBtn}
+                  onSignIn={props.onSignIn}
+                />
+              )}
+            </IndentLayout>
+          </div>
+        )}
     </div>
   );
 }
@@ -73,7 +84,14 @@ CommentCard.propTypes = {
     text: PropTypes.string,
     level: PropTypes.number,
   }).isRequired,
-  lastChildActiveReplyId: PropTypes.string,
+  activeReplyId: PropTypes.oneOfType([
+    PropTypes.oneOf([null]),
+    PropTypes.string,
+  ]),
+  lastChildActiveReply: PropTypes.shape({
+    id: PropTypes.string,
+    level: PropTypes.number,
+  }).isRequired,
   handleReplyFooterVisibility: PropTypes.func,
   addComment: PropTypes.func,
   t: PropTypes.func,
@@ -84,6 +102,7 @@ CommentCard.propTypes = {
 };
 
 CommentCard.defaultProps = {
+  activeReplyId: null,
   lastChildActiveReplyId: "",
   handleReplyFooterVisibility: () => {},
   t: (text) => text,
